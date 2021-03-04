@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/base_blue"
+        android:textColor="@color/white"
+        android:text="Choose account"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/account_background">
+
+        <TextView
+            android:id="@+id/aptiv_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:text="Aptiv" />
+        <ProgressBar
+            android:id="@+id/aptinv_spinner_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="invisible"
+            android:layout_gravity="end|center"
+            android:layout_marginRight="10dp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/account_background">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/experian_account"
+        android:gravity="center"
+        tools:text="Experian"
+        android:textSize="20sp"
+        android:textColor="@color/white"/>
+
+        <ProgressBar
+            android:id="@+id/experian_spinner_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="invisible"
+            android:layout_gravity="end|center"
+            android:layout_marginRight="10dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/account_background">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/fiserv_account"
+        android:gravity="center"
+        tools:text="Fiserv"
+        android:textSize="20sp"
+        android:textColor="@color/white" />
+
+
+        <ProgressBar
+            android:id="@+id/fiserv_spinner_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="invisible"
+            android:layout_gravity="end|center"
+            android:layout_marginRight="10dp"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/account_background">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/harness_account"
+        android:gravity="center"
+        tools:text="Aptiv"
+        android:textSize="20sp"
+        android:textColor="@color/white"/>
+
+
+        <ProgressBar
+            android:id="@+id/harness_spinner_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="invisible"
+            android:layout_gravity="end|center"
+            android:layout_marginRight="10dp"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/account_background">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/paolo_account"
+        android:gravity="center"
+        tools:text="Aptiv"
+        android:textSize="20sp"
+        android:textColor="@color/white"/>
+
+    <ProgressBar
+        android:id="@+id/paolo_spinner_view"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="invisible"
+        android:layout_gravity="end|center"
+        android:layout_marginRight="10dp"/>
+    </FrameLayout>
+</LinearLayout>
