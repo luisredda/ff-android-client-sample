@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.harness.cfsdk.sample.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/main_card_layout"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+
+    <LinearLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+
+        <ImageView
+            android:id="@+id/feature_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cd" />
+        <ImageView
+            android:id="@+id/new_banner"
+            android:visibility="invisible"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top|end"
+            android:src="@drawable/new_banner" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/feature_description"
+            tools:text="sdfsdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/darker_gray" />
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="bottom">
+
+        <TextView
+            android:id="@+id/trial_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:text="14-Day trial" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="62dp"
+            android:layout_height="36dp"
+            android:id="@+id/enable_button"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/enable_button"
+            android:text="Enable"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="12sp" />
+
+
+    </RelativeLayout>
+</io.harness.cfsdk.sample.SquareFrameLayout>

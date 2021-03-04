@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Harness Android Sample App</string>
+
+    <string name="trial_period">%s-Day Trial</string>
+
+    <string name="cv_description">Deploy in peace, verify activities that take place in system. Identify risk early.</string>
+    <string name="ci_description">Commit, build, and test your code at a whole new level.</string>
+    <string name="ce_description">Efficiency Spot and quickly debug inefficiencies and optimize them to reduce costs.</string>
+    <string name="cf_description">Decouple release from deployment and rollout features safely and quickly.</string>
+
+    <string name="help">Need help &#9995;</string>
+
+</resources>
