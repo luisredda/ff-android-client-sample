@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import io.harness.cfsdk.*
+import io.harness.cfsdk.cloud.model.Target
 
 class SampleAuthFragment : Fragment() {
 
@@ -34,35 +35,40 @@ class SampleAuthFragment : Fragment() {
 
         val harnessAccount = view.findViewById<TextView>(R.id.harness_account)
         val harnessAccountSpinner: View = view.findViewById(R.id.harness_spinner_view)
-        setView(harnessAccount, harnessAccountSpinner,Constants.Account.HARNESS)
+        setView(harnessAccount, harnessAccountSpinner, Constants.Account.HARNESS)
 
         val paoloAccount = view.findViewById<TextView>(R.id.paolo_account)
-        val paoloAccountSpinner:View = view.findViewById(R.id.paolo_spinner_view)
+        val paoloAccountSpinner: View = view.findViewById(R.id.paolo_spinner_view)
         setView(paoloAccount, paoloAccountSpinner, Constants.Account.PAOLO)
 
         return view
     }
 
     private fun open(account: Constants.Account) {
-        Constants.selectedAccount = account.accountName
+
+        val accName = account.accountName
+        val target = Target().identifier(accName)
+
+        Constants.selectedAccount = accName
+
         val remoteConfiguration = CfConfiguration.builder()
             .enableStream(true)
             .pollingInterval(10)
-            .target(account.accountName)
             .build()
 
-        CfClient.getInstance().initialize(context, Constants.CF_SDK_API_KEY, remoteConfiguration) {
-            Handler(Looper.getMainLooper()).post {
-                fragmentManager?.beginTransaction()
-                    ?.replace(R.id.main_fragment_holder, FeaturesFragment.newInstance())
-                    ?.addToBackStack("FeaturesFragment")
-                    ?.commit()
-            }
+        CfClient.getInstance()
+            .initialize(context, Constants.CF_SDK_API_KEY, remoteConfiguration, target) {
 
-        }
+                Handler(Looper.getMainLooper()).post {
+                    fragmentManager?.beginTransaction()
+                        ?.replace(R.id.main_fragment_holder, FeaturesFragment.newInstance())
+                        ?.addToBackStack("FeaturesFragment")
+                        ?.commit()
+                }
+            }
     }
 
-    private fun setView(textView: TextView, spinner:View, account: Constants.Account) {
+    private fun setView(textView: TextView, spinner: View, account: Constants.Account) {
         textView.text = account.accountName
         textView.setOnClickListener {
             spinner.visibility = View.VISIBLE
