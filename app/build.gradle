@@ -53,6 +53,8 @@ dependencies {
         Comment the 'io.harness:ff-android-client-sdk:*' implementation line
         and uncomment the 'implementation(name: 'cfsdk-release', ext: 'aar')'
         line in case of .aar file SDK use.
+
+        .aar file shall be copied into 'app/libs' directory.
     */
     implementation 'io.harness:ff-android-client-sdk:0.0.4'
     // implementation(name: 'cfsdk-release', ext: 'aar')
