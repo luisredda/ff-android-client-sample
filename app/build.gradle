@@ -50,12 +50,20 @@ dependencies {
 
     /*
         NOTE:
-        Comment the 'io.harness:ff-android-client-sdk:*' implementation line
-        and uncomment the 'implementation(name: 'cfsdk-release', ext: 'aar')'
-        line in case of .aar file SDK use.
 
-        .aar file shall be copied into 'app/libs' directory.
+        In case of .aar file SDK use do the following:
+        - Comment the 'io.harness:ff-android-client-sdk:*' implementation line
+        - Uncomment whole 'AAR dependencies' block
+        - Make sure that .aar file is copied into 'app/libs' directory.
     */
     implementation 'io.harness:ff-android-client-sdk:0.0.4'
-    // implementation(name: 'cfsdk-release', ext: 'aar')
+    /* AAR dependencies:
+    implementation(name: 'cfsdk-release', ext: 'aar')
+    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+    implementation 'io.swagger:swagger-annotations:1.5.24'
+    implementation 'io.gsonfire:gson-fire:1.8.4'
+    implementation 'org.threeten:threetenbp:1.4.3'
+    */
 }
