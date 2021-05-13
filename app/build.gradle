@@ -48,5 +48,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    /*
+        NOTE:
+        Comment the 'io.harness:ff-android-client-sdk:*' implementation line
+        and uncomment the 'implementation(name: 'cfsdk-release', ext: 'aar')'
+        line in case of .aar file SDK use.
+    */
     implementation 'io.harness:ff-android-client-sdk:0.0.4'
+    // implementation(name: 'cfsdk-release', ext: 'aar')
 }
