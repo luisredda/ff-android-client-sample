@@ -20,24 +20,30 @@ import io.harness.cfsdk.R
 import io.harness.cfsdk.cloud.core.model.Evaluation
 import io.harness.cfsdk.cloud.events.EvaluationListener
 import io.harness.cfsdk.cloud.oksse.EventsListener
+import io.harness.cfsdk.logging.CfLog
 
 class FeaturesFragment : Fragment() {
 
-    private var adapter: ModulesAdapter? = null
+    private val logTag = FeaturesFragment::class.simpleName
+
     private var mainView: View? = null
-    private var mainCardLayout: MaterialCardView? = null
-    private var featureLogo: ImageView? = null
     private var helpButton: TextView? = null
+    private var featureLogo: ImageView? = null
+    private var adapter: ModulesAdapter? = null
+    private var mainCardLayout: MaterialCardView? = null
 
     private lateinit var cv: Module
     private lateinit var ci: Module
     private lateinit var ce: Module
     private lateinit var cf: Module
 
-    private lateinit var enabledModulesView: TextView
     private lateinit var moreModulesView: TextView
+    private lateinit var enabledModulesView: TextView
 
     private var eventsListener = EventsListener { event ->
+
+        CfLog.OUT.v(logTag, "Event: ${event.eventType}")
+
         if (event.eventType == StatusEvent.EVENT_TYPE.EVALUATION_CHANGE) {
             val evaluation: Evaluation = event.extractPayload()
             when (evaluation.flag) {
