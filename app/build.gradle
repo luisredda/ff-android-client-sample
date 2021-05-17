@@ -26,11 +26,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
 
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
 
         jvmTarget = '1.8'
@@ -44,7 +46,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
     testImplementation 'junit:junit:4.13.2'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -56,8 +60,9 @@ dependencies {
         - Uncomment whole 'AAR dependencies' block
         - Make sure that .aar file is copied into 'app/libs' directory.
     */
-    implementation 'io.harness:ff-android-client-sdk:0.0.4'
-    /* AAR dependencies:
+
+    // implementation 'io.harness:ff-android-client-sdk:0.0.4'
+
     implementation(name: 'cfsdk-release', ext: 'aar')
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
@@ -65,5 +70,4 @@ dependencies {
     implementation 'io.swagger:swagger-annotations:1.5.24'
     implementation 'io.gsonfire:gson-fire:1.8.4'
     implementation 'org.threeten:threetenbp:1.4.3'
-    */
 }

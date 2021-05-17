@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -133,36 +134,51 @@ class FeaturesFragment : Fragment() {
             ModuleViewConfig(R.color.white, R.color.black, ModuleType.CF.resourceLight)
         )
 
-        adapter!!.list.clear()
-        adapter!!.list.add(cv)
-        adapter!!.list.add(ci)
-        adapter!!.list.add(ce)
-        adapter!!.list.add(cf)
+        adapter?.list?.clear()
+        adapter?.list?.add(cv)
+        adapter?.list?.add(ci)
+        adapter?.list?.add(ce)
+        adapter?.list?.add(cf)
 
+        val registerEventsOk = CfClient.getInstance().registerEventsListener(eventsListener)
 
+        var registerEvaluationsOk = CfClient.getInstance().registerEvaluationListener(
 
-        CfClient.getInstance().registerEventsListener(eventsListener)
-
-        CfClient.getInstance()
-            .registerEvaluationListener(Constants.CFFlags.DARK_MODE.flag, darkModeListener)
-
-        CfClient.getInstance().registerEvaluationListener(
-            Constants.CFFlags.ENABLE_GLOBAL_HELP.flag,
-            globalHelpListener
+            Constants.CFFlags.DARK_MODE.flag,
+            darkModeListener
         )
 
-        loadCE()
-        loadCV()
-        loadCI()
-        loadCF()
+        if (registerEvaluationsOk) {
+            registerEvaluationsOk = CfClient.getInstance().registerEvaluationListener(
 
-        applyMode()
-        adapter!!.list.forEach {
-            applyMode(it)
+                Constants.CFFlags.ENABLE_GLOBAL_HELP.flag,
+                globalHelpListener
+            )
         }
-        applyOnHelp()
 
-        adapter!!.notifyDataSetChanged()
+        if (registerEventsOk && registerEvaluationsOk) {
+
+            loadCE()
+            loadCV()
+            loadCI()
+            loadCF()
+
+            applyMode()
+            adapter?.list?.forEach {
+
+                applyMode(it)
+            }
+            applyOnHelp()
+
+            adapter?.notifyDataSetChanged()
+        } else {
+
+            activity?.let {
+
+                val msg = "Registration(s) failed"
+                Toast.makeText(it, msg, Toast.LENGTH_SHORT).show()
+            }
+        }
         return view
     }
 
@@ -262,10 +278,14 @@ class FeaturesFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         CfClient.getInstance().unregisterEventsListener(eventsListener)
-        CfClient.getInstance()
-            .unregisterEvaluationListener(Constants.CFFlags.DARK_MODE.flag, darkModeListener)
         CfClient.getInstance().unregisterEvaluationListener(
+
+            Constants.CFFlags.DARK_MODE.flag, darkModeListener
+        )
+        CfClient.getInstance().unregisterEvaluationListener(
+
             Constants.CFFlags.ENABLE_GLOBAL_HELP.flag,
             globalHelpListener
         )
