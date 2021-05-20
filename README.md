@@ -3,6 +3,7 @@
 This Demo App will demonstrate the usage and capabilities of Android client SDK.
 
 ### Setup
+
 Add following snippet to root project's `build.gradle` file:
 ```
 buildscript {
@@ -12,8 +13,9 @@ buildscript {
 ```
 
 In app `build.gradle` file add dependency for Harness's SDK
-`implementation 'io.harness:ff-android-client-sdk:0.0.2'`
+`implementation 'io.harness:ff-android-client-sdk:0.0.5'`
 
+Update the `CF_SDK_API_KEY` field in `Constants.kt` with your key. 
 
 ### Accounts used:
 | No. | Account |
