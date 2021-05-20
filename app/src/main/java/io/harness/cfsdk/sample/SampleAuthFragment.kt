@@ -1,22 +1,24 @@
 package io.harness.cfsdk.sample
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import io.harness.cfsdk.*
+import io.harness.cfsdk.cloud.model.Target
+import io.harness.cfsdk.logging.CfLog
 
 class SampleAuthFragment : Fragment() {
+
+    private val logTag = SampleAuthFragment::class.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
         val view = inflater.inflate(R.layout.fragment_sample_auth, container, false)
 
@@ -34,39 +36,83 @@ class SampleAuthFragment : Fragment() {
 
         val harnessAccount = view.findViewById<TextView>(R.id.harness_account)
         val harnessAccountSpinner: View = view.findViewById(R.id.harness_spinner_view)
-        setView(harnessAccount, harnessAccountSpinner,Constants.Account.HARNESS)
+        setView(harnessAccount, harnessAccountSpinner, Constants.Account.HARNESS)
 
         val paoloAccount = view.findViewById<TextView>(R.id.paolo_account)
-        val paoloAccountSpinner:View = view.findViewById(R.id.paolo_spinner_view)
+        val paoloAccountSpinner: View = view.findViewById(R.id.paolo_spinner_view)
         setView(paoloAccount, paoloAccountSpinner, Constants.Account.PAOLO)
 
         return view
     }
 
-    private fun open(account: Constants.Account) {
-        Constants.selectedAccount = account.accountName
+    private fun open(
+
+        account: Constants.Account,
+        views: List<View>
+    ) {
+
+        val accName = account.accountName
+        val target = Target().identifier(accName)
+
+        Constants.selectedAccount = accName
+
         val remoteConfiguration = CfConfiguration.builder()
             .enableStream(true)
             .pollingInterval(10)
-            .target(account.accountName)
             .build()
 
-        CfClient.getInstance().initialize(context, Constants.CF_SDK_API_KEY, remoteConfiguration) {
-            Handler(Looper.getMainLooper()).post {
-                fragmentManager?.beginTransaction()
-                    ?.replace(R.id.main_fragment_holder, FeaturesFragment.newInstance())
-                    ?.addToBackStack("FeaturesFragment")
-                    ?.commit()
-            }
+        CfClient.getInstance()
+            .initialize(
 
-        }
+                context,
+                Constants.CF_SDK_API_KEY,
+                remoteConfiguration,
+                target
+            ) { _, result ->
+
+                activity?.let {
+                    it.runOnUiThread {
+
+                        views.forEach { view ->
+
+                            view.visibility = View.GONE
+                        }
+                        if (result.isSuccess) {
+
+                            fragmentManager?.beginTransaction()
+                                ?.replace(R.id.main_fragment_holder, FeaturesFragment.newInstance())
+                                ?.addToBackStack("FeaturesFragment")
+                                ?.commit()
+                        } else {
+
+                            val e = result.error
+                            var msg = "Initialization error"
+                            e?.let { err ->
+
+                                err.message?.let { errMsg ->
+                                    msg = errMsg
+                                }
+                                CfLog.OUT.e(logTag, msg, err)
+                            }
+                            Toast.makeText(it, msg, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
     }
 
-    private fun setView(textView: TextView, spinner:View, account: Constants.Account) {
+    private fun setView(
+
+        textView: TextView,
+        spinner: View,
+        account: Constants.Account
+    ) {
+
         textView.text = account.accountName
         textView.setOnClickListener {
+
             spinner.visibility = View.VISIBLE
-            open(account)
+            open(account, listOf(spinner))
         }
     }
 

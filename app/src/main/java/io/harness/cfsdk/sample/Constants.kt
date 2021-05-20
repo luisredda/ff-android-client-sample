@@ -1,7 +1,8 @@
 package io.harness.cfsdk.sample
 
 object Constants {
-    const val CF_SDK_API_KEY = "5d59cb10-66cb-405b-ab54-b4d48132f383"
+
+    const val CF_SDK_API_KEY = "YOUR_API_KEY"
 
     const val CF_SERVER = "https://config.feature-flags.uat.harness.io"
     const val BASE_URL = "$CF_SERVER/api/1.0"
