@@ -52,13 +52,12 @@ class SampleAuthFragment : Fragment() {
     ) {
 
         val accName = account.accountName
-        val target = Target().identifier(accName)
+        val target = Target().identifier(accName).name("Harness")
 
         Constants.selectedAccount = accName
 
         val remoteConfiguration = CfConfiguration.builder()
             .enableStream(true)
-            .pollingInterval(10)
             .build()
 
         CfClient.getInstance()
