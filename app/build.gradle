@@ -61,7 +61,7 @@ dependencies {
         - Make sure that .aar file is copied into 'app/libs' directory.
     */
 
-    implementation 'io.harness:ff-android-client-sdk:0.0.6'
+    implementation 'io.harness:ff-android-client-sdk:0.0.7'
 
     /* AAR dependencies:
     implementation(name: 'cfsdk-release', ext: 'aar')
@@ -71,5 +71,7 @@ dependencies {
     implementation 'io.swagger:swagger-annotations:1.5.24'
     implementation 'io.gsonfire:gson-fire:1.8.4'
     implementation 'org.threeten:threetenbp:1.4.3'
-     */
+    implementation 'com.lmax:disruptor:3.4.2'
+    implementation 'com.google.guava:guava:30.1.1-android'
+    */
 }
