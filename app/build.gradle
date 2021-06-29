@@ -61,7 +61,7 @@ dependencies {
         - Make sure that .aar file is copied into 'app/libs' directory.
     */
 
-    implementation 'io.harness:ff-android-client-sdk:1.0.1'
+    implementation 'io.harness:ff-android-client-sdk:1.0.2'
 
     /* AAR dependencies:
     implementation(name: 'cfsdk-release', ext: 'aar')
