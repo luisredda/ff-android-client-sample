@@ -13,7 +13,7 @@ buildscript {
 ```
 
 In app `build.gradle` file add dependency for Harness's SDK
-`implementation 'io.harness:ff-android-client-sdk:0.0.7'`
+`implementation 'io.harness:ff-android-client-sdk:1.0.4'`
 
 Update the `CF_SDK_API_KEY` field in `Constants.kt` with your key. 
 
