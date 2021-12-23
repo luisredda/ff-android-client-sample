@@ -57,16 +57,21 @@ class SampleAuthFragment : Fragment() {
         Constants.selectedAccount = accName
 
         val remoteConfiguration = CfConfiguration.builder()
+//            .baseUrl("https://config.feature-flags.uat.harness.io/api/1.0")
+//            .eventUrl("https://event.feature-flags.uat.harness.io/api/1.0")
+//            .streamUrl("https://config.feature-flags.uat.harness.io/api/1.0/stream")
             .enableStream(true)
             .build()
 
-        CfClient.getInstance()
-            .initialize(
+        try {
+
+            CfClient.getInstance().initialize(
 
                 context,
                 Constants.CF_SDK_API_KEY,
                 remoteConfiguration,
                 target
+
             ) { _, result ->
 
                 activity?.let {
@@ -79,7 +84,10 @@ class SampleAuthFragment : Fragment() {
                         if (result.isSuccess) {
 
                             fragmentManager?.beginTransaction()
-                                ?.replace(R.id.main_fragment_holder, FeaturesFragment.newInstance())
+                                ?.replace(
+                                    R.id.main_fragment_holder,
+                                    FeaturesFragment.newInstance()
+                                )
                                 ?.addToBackStack("FeaturesFragment")
                                 ?.commit()
                         } else {
@@ -98,6 +106,11 @@ class SampleAuthFragment : Fragment() {
                     }
                 }
             }
+
+        } catch (e: IllegalStateException) {
+
+            CfLog.OUT.e(logTag, e.message, e)
+        }
     }
 
     private fun setView(

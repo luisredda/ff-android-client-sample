@@ -61,10 +61,10 @@ dependencies {
         - Make sure that .aar file is copied into 'app/libs' directory.
     */
 
-    implementation 'io.harness:ff-android-client-sdk:1.0.3'
+    implementation 'io.harness:ff-android-client-sdk:1.0.6'
 
     /* AAR dependencies:
-    implementation(name: 'cfsdk-release', ext: 'aar')
+    implementation(name: 'cfsdk-debug', ext: 'aar')
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
@@ -73,5 +73,6 @@ dependencies {
     implementation 'org.threeten:threetenbp:1.4.3'
     implementation 'com.lmax:disruptor:3.4.2'
     implementation 'com.google.guava:guava:30.1.1-android'
+    implementation 'com.orhanobut:hawk:2.0.1'
     */
 }

@@ -21,10 +21,12 @@ import io.harness.cfsdk.cloud.core.model.Evaluation
 import io.harness.cfsdk.cloud.events.EvaluationListener
 import io.harness.cfsdk.cloud.oksse.EventsListener
 import io.harness.cfsdk.logging.CfLog
+import java.util.concurrent.Executors
 
 class FeaturesFragment : Fragment() {
 
     private val logTag = FeaturesFragment::class.simpleName
+    private val executor = Executors.newFixedThreadPool(5)
 
     private var mainView: View? = null
     private var helpButton: TextView? = null
@@ -45,16 +47,24 @@ class FeaturesFragment : Fragment() {
         CfLog.OUT.v(logTag, "Event: ${event.eventType}")
 
         if (event.eventType == StatusEvent.EVENT_TYPE.EVALUATION_CHANGE) {
+
             val evaluation: Evaluation = event.extractPayload()
+
+            CfLog.OUT.v(logTag, "Evaluation: ${evaluation.flag} -> ${evaluation.value}")
+
             when (evaluation.flag) {
+
                 Constants.CFFlags.ENABLE_CE_MODULE.flag, Constants.CFFlags.TRIAL_LIMIT_CE.flag -> loadCE()
                 Constants.CFFlags.ENABLE_CV_MODULE.flag, Constants.CFFlags.TRIAL_LIMIT_CV.flag -> loadCV()
                 Constants.CFFlags.ENABLE_CI_MODULE.flag, Constants.CFFlags.TRIAL_LIMIT_CI.flag -> loadCI()
                 Constants.CFFlags.ENABLE_CF_MODULE.flag, Constants.CFFlags.CF_RIBBON.flag -> loadCF()
             }
+
             Handler(Looper.getMainLooper()).post {
+
                 adapter?.notifyDataSetChanged()
             }
+
         } else if (event.eventType == StatusEvent.EVENT_TYPE.EVALUATION_RELOAD) {
 
             loadCE()
@@ -63,11 +73,14 @@ class FeaturesFragment : Fragment() {
             loadCF()
 
             adapter?.list?.forEach {
+
                 applyMode(it)
             }
 
             applyOnHelp()
+
             Handler(Looper.getMainLooper()).post {
+
                 applyMode()
                 adapter?.notifyDataSetChanged()
             }
@@ -75,7 +88,9 @@ class FeaturesFragment : Fragment() {
     }
 
     private val darkModeListener: EvaluationListener = EvaluationListener {
+
         Handler(Looper.getMainLooper()).post {
+
             adapter?.list?.forEach { applyMode(it) }
             applyMode()
             adapter?.notifyDataSetChanged()
@@ -83,16 +98,21 @@ class FeaturesFragment : Fragment() {
     }
 
     private val globalHelpListener: EvaluationListener = EvaluationListener {
+
         Handler(Looper.getMainLooper()).post {
+
             applyOnHelp()
         }
     }
 
     override fun onCreateView(
+
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_features, container, false)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.modules_recycler_view)
@@ -118,6 +138,7 @@ class FeaturesFragment : Fragment() {
             ModuleType.CV,
             ModuleViewConfig(R.color.white, R.color.black, ModuleType.CV.resourceLight)
         )
+
         ci = Module(
             getString(R.string.ci_description),
             7,
@@ -125,6 +146,7 @@ class FeaturesFragment : Fragment() {
             ModuleType.CI,
             ModuleViewConfig(R.color.white, R.color.black, ModuleType.CI.resourceLight)
         )
+
         ce = Module(
             getString(R.string.ce_description),
             14,
@@ -132,6 +154,7 @@ class FeaturesFragment : Fragment() {
             ModuleType.CE,
             ModuleViewConfig(R.color.white, R.color.black, ModuleType.CE.resourceLight)
         )
+
         cf = Module(
             getString(R.string.cf_description),
             30,
@@ -177,6 +200,7 @@ class FeaturesFragment : Fragment() {
             applyOnHelp()
 
             adapter?.notifyDataSetChanged()
+
         } else {
 
             activity?.let {
@@ -190,114 +214,210 @@ class FeaturesFragment : Fragment() {
 
     private fun applyMode(module: Module) {
 
-        val darkMode = CfClient.getInstance().boolVariation(Constants.CFFlags.DARK_MODE.flag, false)
-        module.moduleViewConfig.backgroundColor = if (darkMode) R.color.black else R.color.white
-        module.moduleViewConfig.textColor = if (darkMode) R.color.white else R.color.black
+        executor.execute {
 
-        val imgSrc = if (darkMode) {
-            module.moduleType.resourceDark
-        } else {
-            module.moduleType.resourceLight
+            val darkMode = CfClient.getInstance().boolVariation(Constants.CFFlags.DARK_MODE.flag, false)
+
+            activity?.let {
+
+                if (!it.isFinishing) {
+
+                    module.moduleViewConfig.backgroundColor = if (darkMode) R.color.black else R.color.white
+                    module.moduleViewConfig.textColor = if (darkMode) R.color.white else R.color.black
+
+                    val imgSrc = if (darkMode) {
+                        module.moduleType.resourceDark
+                    } else {
+                        module.moduleType.resourceLight
+                    }
+                    module.moduleViewConfig.imageSrc = imgSrc
+                }
+            }
         }
-        module.moduleViewConfig.imageSrc = imgSrc
     }
 
     private fun applyMode() {
-        activity?.let {
 
-            if (it.isFinishing) {
-                return
+        executor.execute {
+
+            val darkMode = CfClient.getInstance().boolVariation(Constants.CFFlags.DARK_MODE.flag, false)
+
+            activity?.let {
+
+                if (!it.isFinishing) {
+
+                    it.runOnUiThread {
+
+                        val textColor = if (darkMode) R.color.white else R.color.black
+                        val backgroundColor = if (darkMode) R.color.black else R.color.white
+                        val imgSrc = if (darkMode) R.drawable.cd_dark else R.drawable.cd
+
+                        enabledModulesView.setTextColor(ContextCompat.getColor(it, textColor))
+                        moreModulesView.setTextColor(ContextCompat.getColor(it, textColor))
+                        mainView?.setBackgroundColor(ContextCompat.getColor(it, backgroundColor))
+                        mainCardLayout?.setCardBackgroundColor(ContextCompat.getColor(it, backgroundColor))
+
+                        featureLogo?.setImageResource(imgSrc)
+                    }
+                }
             }
-
-            val darkMode: Boolean = CfClient.getInstance()
-                .boolVariation(Constants.CFFlags.DARK_MODE.flag, false)
-
-            val textColor = if (darkMode) R.color.white else R.color.black
-            val backgroundColor = if (darkMode) R.color.black else R.color.white
-            val imgSrc = if (darkMode) R.drawable.cd_dark else R.drawable.cd
-
-            enabledModulesView.setTextColor(ContextCompat.getColor(it, textColor))
-            moreModulesView.setTextColor(ContextCompat.getColor(it, textColor))
-            mainView?.setBackgroundColor(ContextCompat.getColor(it, backgroundColor))
-            mainCardLayout?.setCardBackgroundColor(ContextCompat.getColor(it, backgroundColor))
-
-            featureLogo?.setImageResource(imgSrc)
         }
     }
 
     private fun applyOnHelp() {
-        val helpEvaluation = CfClient.getInstance().boolVariation(
-            Constants.CFFlags.ENABLE_GLOBAL_HELP.flag,
-            false
-        )
-        val helpEnabled: Boolean = helpEvaluation
-        helpButton?.visibility = if (helpEnabled) View.VISIBLE else View.GONE
+
+        executor.execute {
+
+            val helpEvaluation = CfClient.getInstance().boolVariation(
+
+                Constants.CFFlags.ENABLE_GLOBAL_HELP.flag,
+                false
+            )
+
+            activity?.let {
+
+                it.runOnUiThread {
+
+                    if (!it.isFinishing) {
+
+                        val helpEnabled: Boolean = helpEvaluation
+                        helpButton?.visibility = if (helpEnabled) View.VISIBLE else View.GONE
+                    }
+                }
+            }
+        }
     }
 
     private fun loadCF() {
-        val cfEvaluation = CfClient.getInstance().boolVariation(
-            Constants.CFFlags.ENABLE_CF_MODULE.flag,
-            false
-        )
-        val cfTrialEvaluation = CfClient.getInstance()
-            .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CF.flag, 7.0)
-        val cfRibbonEvaluation = CfClient.getInstance()
-            .boolVariation(Constants.CFFlags.CF_RIBBON.flag, false)
-        cf.enabed = cfEvaluation
-        cf.trialPeriod = cfTrialEvaluation.toInt()
-        cf.moduleViewConfig.enableRibbon = cfRibbonEvaluation
 
+        executor.execute {
+
+            val cfEvaluation = CfClient.getInstance().boolVariation(
+                Constants.CFFlags.ENABLE_CF_MODULE.flag,
+                false
+            )
+
+            val cfTrialEvaluation = CfClient.getInstance()
+                .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CF.flag, 7.0)
+
+            val cfRibbonEvaluation = CfClient.getInstance()
+                .boolVariation(Constants.CFFlags.CF_RIBBON.flag, false)
+
+            activity?.let {
+
+                it.runOnUiThread {
+
+                    if (!it.isFinishing) {
+
+                        cf.enabed = cfEvaluation
+                        cf.trialPeriod = cfTrialEvaluation.toInt()
+                        cf.moduleViewConfig.enableRibbon = cfRibbonEvaluation
+                    }
+                }
+            }
+        }
     }
 
     private fun loadCI() {
-        val ciEvaluation = CfClient.getInstance().boolVariation(
-            Constants.CFFlags.ENABLE_CI_MODULE.flag,
-            false
-        )
-        ci.enabed = ciEvaluation
-        val ciTrialEvaluation = CfClient.getInstance()
-            .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CI.flag, 7.0)
-        ci.trialPeriod = ciTrialEvaluation
+
+        executor.execute {
+
+            val ciEvaluation = CfClient.getInstance().boolVariation(
+
+                Constants.CFFlags.ENABLE_CI_MODULE.flag,
+                false
+            )
+
+            val ciTrialEvaluation = CfClient.getInstance()
+                .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CI.flag, 7.0)
+
+            activity?.let {
+
+                it.runOnUiThread {
+
+                    if (!it.isFinishing) {
+
+                        ci.enabed = ciEvaluation
+                        ci.trialPeriod = ciTrialEvaluation
+                    }
+                }
+            }
+        }
     }
 
     private fun loadCV() {
-        val cvEvaluation = CfClient.getInstance().boolVariation(
-            Constants.CFFlags.ENABLE_CV_MODULE.flag,
-            false
-        )
-        cv.enabed = cvEvaluation
-        val cvTrialEvaluation = CfClient.getInstance()
-            .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CV.flag, 7.0)
-        cv.trialPeriod = cvTrialEvaluation
+
+        executor.execute {
+
+            val cvEvaluation = CfClient.getInstance().boolVariation(
+
+                Constants.CFFlags.ENABLE_CV_MODULE.flag,
+                false
+            )
+
+            val cvTrialEvaluation = CfClient.getInstance()
+                .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CV.flag, 7.0)
+
+            activity?.let {
+
+                it.runOnUiThread {
+
+                    if (!it.isFinishing) {
+
+                        cv.enabed = cvEvaluation
+                        cv.trialPeriod = cvTrialEvaluation
+                    }
+                }
+            }
+        }
     }
 
     private fun loadCE() {
-        val ceEvaluation = CfClient.getInstance().boolVariation(
-            Constants.CFFlags.ENABLE_CE_MODULE.flag,
-            false
-        )
-        ce.enabed = ceEvaluation
-        val ceTrialEvaluation = CfClient.getInstance()
-            .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CE.flag, 7.0)
-        ce.trialPeriod = ceTrialEvaluation
+
+        executor.execute {
+
+            val ceEvaluation = CfClient.getInstance().boolVariation(
+                Constants.CFFlags.ENABLE_CE_MODULE.flag,
+                false
+            )
+            val ceTrialEvaluation = CfClient.getInstance()
+                .numberVariation(Constants.CFFlags.TRIAL_LIMIT_CE.flag, 7.0)
+
+            activity?.let {
+
+                it.runOnUiThread {
+
+                    if (!it.isFinishing) {
+
+                        ce.enabed = ceEvaluation
+                        ce.trialPeriod = ceTrialEvaluation
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
         CfClient.getInstance().unregisterEventsListener(eventsListener)
+
         CfClient.getInstance().unregisterEvaluationListener(
 
             Constants.CFFlags.DARK_MODE.flag, darkModeListener
         )
+
         CfClient.getInstance().unregisterEvaluationListener(
 
             Constants.CFFlags.ENABLE_GLOBAL_HELP.flag,
             globalHelpListener
         )
+
+        CfClient.getInstance().destroy();
     }
 
     companion object {
+
         @JvmStatic
         fun newInstance() = FeaturesFragment()
     }
