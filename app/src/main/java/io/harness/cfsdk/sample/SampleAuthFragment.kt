@@ -13,11 +13,17 @@ import io.harness.cfsdk.logging.CfLog
 
 class SampleAuthFragment : Fragment() {
 
+    /**
+     * TODO: Refactoring needed
+     */
+
     private val logTag = SampleAuthFragment::class.simpleName
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_sample_auth, container, false)
@@ -120,7 +126,7 @@ class SampleAuthFragment : Fragment() {
         account: Constants.Account
     ) {
 
-        textView.text = account.accountName
+        textView.text = account.accountName.replace("_", " ")
         textView.setOnClickListener {
 
             spinner.visibility = View.VISIBLE

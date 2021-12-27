@@ -10,7 +10,7 @@ object Constants {
         EXPERIAN("Experian"),
         FISERV("Fiserv"),
         HARNESS("Harness"),
-        PAOLO("Paolo Alto Networks");
+        PAOLO("Paolo_Alto_Networks");
     }
 
     var selectedAccount = Account.EXPERIAN.accountName
