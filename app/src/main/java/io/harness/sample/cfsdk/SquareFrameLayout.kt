@@ -1,8 +1,7 @@
-package io.harness.cfsdk.sample
+package io.harness.sample.cfsdk
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
 import com.google.android.material.card.MaterialCardView
 
 

@@ -1,4 +1,4 @@
-package io.harness.cfsdk.sample
+package io.harness.sample.cfsdk
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +10,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction().add(R.id.main_fragment_holder, SampleAuthFragment.newInstance())
+        supportFragmentManager.beginTransaction().add(R.id.main_fragment_holder,
+            SampleAuthFragment.newInstance()
+        )
             .commit()
     }
 

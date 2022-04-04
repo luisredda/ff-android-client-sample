@@ -1,4 +1,4 @@
-package io.harness.cfsdk.sample
+package io.harness.sample.cfsdk
 
 import android.os.Bundle
 import android.view.LayoutInflater

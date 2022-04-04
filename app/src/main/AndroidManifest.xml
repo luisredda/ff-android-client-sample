@@ -3,21 +3,23 @@
     package="io.harness.cfsdk">
 
     <application
-        android:allowBackup="false"
+        android:name="androidx.multidex.MultiDexApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SampleApp">
+
         <activity
-            android:name="io.harness.cfsdk.sample.MainActivity"
+            android:name="io.harness.sample.cfsdk.MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
-
 </manifest>

@@ -1,4 +1,4 @@
-package io.harness.cfsdk.sample
+package io.harness.sample.cfsdk
 
 class ModuleViewConfig(var backgroundColor: Int, var textColor: Int, var imageSrc: Int, var enableRibbon: Boolean = false)
 
