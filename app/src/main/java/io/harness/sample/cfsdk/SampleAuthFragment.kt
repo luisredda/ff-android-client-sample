@@ -63,9 +63,9 @@ class SampleAuthFragment : Fragment() {
         Constants.selectedAccount = accName
 
         val remoteConfiguration = CfConfiguration.builder()
-            .baseUrl("https://config.feature-flags.uat.harness.io/api/1.0")
-            .eventUrl("https://event.feature-flags.uat.harness.io/api/1.0")
-            .streamUrl("https://config.feature-flags.uat.harness.io/api/1.0/stream")
+//            .baseUrl("https://config.feature-flags.uat.harness.io/api/1.0")
+//            .eventUrl("https://event.feature-flags.uat.harness.io/api/1.0")
+//            .streamUrl("https://config.feature-flags.uat.harness.io/api/1.0/stream")
             .enableStream(true)
             .build()
 
