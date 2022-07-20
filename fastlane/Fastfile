@@ -42,4 +42,9 @@ platform :android do
     upload_to_play_store(track: 'beta')
   end
   
+    desc "Bundle Only"
+  lane :bundleonly do
+    gradle(task: "clean bundleRelease")
+  end
+  
 end
