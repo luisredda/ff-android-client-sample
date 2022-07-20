@@ -18,7 +18,7 @@ platform :android do
   end
   desc "Submit a new Internal Build to Play Store"
   lane :internal do
-    upload_to_play_store(track: 'internal', apk: '/harness/app/build/outputs/bundle/release/app-release.aab')
+    upload_to_play_store(track: 'internal', aab: '/harness/app/build/outputs/bundle/release/app-release.aab')
   end
 
   desc "Promote Internal to Alpha"
