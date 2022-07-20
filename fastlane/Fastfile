@@ -19,6 +19,7 @@ platform :android do
   desc "Submit a new Internal Build to Play Store"
   lane :internal do
     upload_to_play_store(track: 'internal', aab: '/harness/app/build/outputs/bundle/release/app-release.aab')
+    release_status: "draft"
   end
 
   desc "Promote Internal to Alpha"
@@ -45,6 +46,11 @@ platform :android do
     desc "Bundle Only"
   lane :bundleonly do
     gradle(task: "clean bundleRelease")
+  end
+  
+   desc "Deploy a draft version to the Google Play"
+  lane :draft do
+    upload_to_play_store(track: 'draft')
   end
   
 end
