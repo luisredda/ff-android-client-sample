@@ -1,2 +1,2 @@
-json_key_file("/harness/play_config.json")
+json_key_file("/harness/fastlane/google_play.json")
 package_name("io.harness.sample.cfsdk")
