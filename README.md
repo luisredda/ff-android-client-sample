@@ -1,4 +1,4 @@
-# Example App using Harness Android SDK (ff-android-client-sdk) for Demo purposes
+# Example App using Harness Android SDK (ff-android-client-sdk) for Demo purposes. Harness
 
 This Demo App will demonstrate the usage and capabilities of Android client SDK.
 
