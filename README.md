@@ -29,4 +29,4 @@ Update the `CF_SDK_API_KEY` field in `Constants.kt` with your key.
 
 During initialization, the target is one of the above accounts, selected from the list, on the first screen of the Demo App.
 
- In order to change the account, you would need to go back to the initial screen and select a different account to use.
+ In order to change the account, you would need to go back to the initial screen and select a different account to use.b
